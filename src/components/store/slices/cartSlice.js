@@ -32,14 +32,22 @@ const cartSlice = createSlice({
       }, 0);
     },
     removeToCart(state, actions) {
-      const id = actions.payload.id;
-      const existingItem = existingItem.find((item) => item.id === id);
-      if (existingItem.quantity > 1) {
-        existingItem.quantity--;
-        existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
-      } else {
-        state.items = state.items.filter((item) => item.id !== id);
-      }
+      // const existingItem = state.items.find(
+      //   (item) => item.itemId === actions.payload.id
+      // );
+
+      console.log(state);
+
+      // console.log(existingItem);
+      // if (existingItem.quantity === 1) {
+      //   state.items = state.items.filter(
+      //     (item) => item.id !== actions.payload.id
+      //   );
+      // } else {
+      //   existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
+      // }
+      // state.totalQuantity--;
+      // state.totalAmount = state.totalAmount - existingItem.price;
     },
   },
 });
