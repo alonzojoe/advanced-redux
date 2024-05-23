@@ -4,8 +4,11 @@ import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import Notification from "./components/UI/Notification";
 import { useSelector, useDispatch } from "react-redux";
-import { sendCartData } from "./components/store/slices/cartSlice";
-import useDidMount from "./hooks/use-did-mount";
+import {
+  sendCartData,
+  fetchCartData,
+} from "./components/store/actions/cart-actions";
+// import useDidMount from "./hooks/use-did-mount";
 let isInitial = true;
 
 function App() {
@@ -15,15 +18,18 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
-  const didMount = useDidMount();
-  console.log("didMount", didMount);
-  // useEffect(() => {
-  //   if (isInitial) {
-  //     isInitial = false;
-  //     return;
-  //   }
-  //   dispatch(sendCartData(cart));
-  // }, [cart, dispatch]);
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isInitial) {
+      isInitial.current = false;
+      return;
+    }
+    dispatch(sendCartData(cart));
+  }, [cart, dispatch]);
+
   return (
     <>
       {notification && (
