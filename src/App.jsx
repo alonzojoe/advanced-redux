@@ -8,7 +8,7 @@ import {
   sendCartData,
   fetchCartData,
 } from "./components/store/actions/cart-actions";
-// import useDidMount from "./hooks/use-did-mount";
+
 let isInitial = true;
 
 function App() {
@@ -19,15 +19,19 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
+    console.log("component mounted");
     dispatch(fetchCartData());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (isInitial) {
-      isInitial.current = false;
+      isInitial = false;
       return;
     }
-    dispatch(sendCartData(cart));
+
+    if (cart.cartChanged) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   return (

@@ -1,7 +1,9 @@
 import { uiActions } from "../slices/uiSlice";
 import { cartActions } from "../slices/cartSlice";
-export const fetchCartData = async () => {
+
+export const fetchCartData = () => {
   return async (dispatch) => {
+    console.log("return function");
     const fetchData = async () => {
       const response = await fetch(
         "https://adv-redux-2fe94-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json"
@@ -20,8 +22,9 @@ export const fetchCartData = async () => {
       const cartData = await fetchData();
       dispatch(
         cartActions.replaceCart({
-          totalQuantity: cartData.totalQuantity,
-          items: cartData.items,
+          totalQuantity: cartData.totalQuantity || 0,
+          totalAmount: cartData.totalAmount || 0,
+          items: cartData.items || [],
         })
       );
     } catch (error) {
@@ -51,7 +54,11 @@ export const sendCartData = (cart) => {
         `https://adv-redux-2fe94-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json`,
         {
           method: "PUT",
-          body: JSON.stringify(cart),
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity,
+            totalAmount: cart.totalAmount,
+          }),
         }
       );
 
